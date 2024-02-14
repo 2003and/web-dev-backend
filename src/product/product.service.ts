@@ -1,23 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DeleteResult, Repository } from 'typeorm';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ProductEntity } from './entities/product.entity';
+import { Repository } from 'typeorm';
 import * as fs from 'fs';
 
-import { CreatePromoDto } from './dto/create-promo.dto';
-import { UpdatePromoDto } from './dto/update-promo.dto';
-import { PromoEntity } from './entities/promo.entity';
-
 @Injectable()
-export class PromoService {
+export class ProductService {
   constructor(
-    @InjectRepository(PromoEntity)
-    private repository: Repository<PromoEntity>,
+    @InjectRepository(ProductEntity)
+    private repository: Repository<ProductEntity>,
   ) {}
 
   async create(
-    dto: CreatePromoDto,
+    dto: CreateProductDto,
     image: Express.Multer.File,
-  ): Promise<PromoEntity> {
+  ): Promise<ProductEntity> {
     return this.repository.save({
       image: image.filename,
       title: dto.title,
@@ -25,15 +24,15 @@ export class PromoService {
     });
   }
 
-  async findAll(): Promise<PromoEntity[]> {
+  async findAll() {
     return this.repository.find();
   }
 
-  async findOne(id: number): Promise<PromoEntity> {
+  async findOne(id: number) {
     return this.repository.findOneBy({ id });
   }
 
-  async update(id: number, dto: UpdatePromoDto, image: Express.Multer.File) {
+  async update(id: number, dto: UpdateProductDto, image: Express.Multer.File) {
     const toUpdate = await this.repository.findOneBy({ id });
     if (!toUpdate) {
       throw new BadRequestException(`Записи с id=${id} не найдено`);
@@ -57,7 +56,7 @@ export class PromoService {
     return this.repository.save(toUpdate);
   }
 
-  async delete(id: number): Promise<DeleteResult> {
+  async remove(id: number) {
     return this.repository.delete(id);
   }
 }

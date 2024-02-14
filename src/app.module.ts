@@ -5,6 +5,7 @@ import { getPostgresConfig } from './configs/postgres.config';
 import { PromoModule } from './promo/promo.module';
 import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     PromoModule,
     CategoryModule,
+    ProductModule,
   ],
 })
 export class AppModule {}

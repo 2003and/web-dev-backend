@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreatePromoDto {
+export class CreateProductDto {
   @ApiProperty({
     type: 'file',
     properties: {
@@ -14,9 +14,12 @@ export class CreatePromoDto {
   })
   image: Express.Multer.File;
 
+  @ApiProperty()
+  @IsNotEmpty()
   @IsString()
-  title: string = 'Название акции';
+  title = 'Тренажер';
 
+  @ApiProperty()
   @IsString()
-  text: string = 'Описание акции';
+  text = 'Фыва';
 }
