@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class CreateCategoryDto {
+export class CreateNewsDto {
   @ApiProperty({
     type: 'file',
     properties: {
@@ -15,9 +15,9 @@ export class CreateCategoryDto {
 
   @ApiProperty()
   @IsString()
-  name: string;
+  title: string;
 
   @ApiProperty()
   @IsString()
-  subcategory: string;
+  description: string;
 }

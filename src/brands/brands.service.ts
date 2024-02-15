@@ -1,42 +1,44 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CategoryEntity } from './entities/category.entity';
 import * as fs from 'fs';
 
+import { CreateBrandDto } from './dto/create-brand.dto';
+import { UpdateBrandDto } from './dto/update-brand.dto';
+import { BrandEntity } from './entities/brand.entity';
+
 @Injectable()
-export class CategoryService {
+export class BrandService {
   constructor(
-    @InjectRepository(CategoryEntity)
-    private repository: Repository<CategoryEntity>,
+    @InjectRepository(BrandEntity)
+    private repository: Repository<BrandEntity>,
   ) {}
 
-  create(dto: CreateCategoryDto): Promise<CategoryEntity> {
+  async create(
+    dto: CreateBrandDto,
+    image: Express.Multer.File,
+  ): Promise<BrandEntity> {
     return this.repository.save({
+      image: image.filename,
       name: dto.name,
     });
   }
-  findAll() {
+
+  async findAll(): Promise<BrandEntity[]> {
     return this.repository.find();
   }
 
-  findOne(id: number) {
+  async findOne(id: number): Promise<BrandEntity> {
     return this.repository.findOneBy({ id });
   }
 
-  async update(id: number, dto: UpdateCategoryDto, image: Express.Multer.File) {
+  async update(id: number, dto: UpdateBrandDto, image: Express.Multer.File) {
     const toUpdate = await this.repository.findOneBy({ id });
     if (!toUpdate) {
       throw new BadRequestException(`Записи с id=${id} не найдено`);
     }
     if (dto.name) {
       toUpdate.name = dto.name;
-    }
-    if (dto.subcategory) {
-      toUpdate.subcategory = dto.subcategory;
     }
     if (image) {
       if (toUpdate.image !== image.filename) {
@@ -51,7 +53,7 @@ export class CategoryService {
     return this.repository.save(toUpdate);
   }
 
-  delete(id: number): Promise<DeleteResult> {
+  async delete(id: number): Promise<DeleteResult> {
     return this.repository.delete(id);
   }
 }

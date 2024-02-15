@@ -1,8 +1,14 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCategoryDto } from './create-category.dto';
+import { CreateNewsDto } from './create-news.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
+export class UpdateNewsDto extends PartialType(CreateNewsDto) {
+  @ApiProperty()
+  title: string;
+
+  @ApiProperty()
+  description: string;
+
   @ApiProperty({
     type: 'file',
     properties: {
@@ -13,10 +19,4 @@ export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
     },
   })
   image: Express.Multer.File;
-
-  @ApiProperty()
-  name: string;
-
-  @ApiProperty()
-  subcategory: string;
 }

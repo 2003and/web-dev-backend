@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('promo')
-export class PromoEntity {
+@Entity('idea')
+export class IdeaEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -10,14 +10,4 @@ export class PromoEntity {
 
   @Column()
   title: string;
-
-  @Column()
-  text: string;
-
-  // TODO: implement properties
-  @Column()
-  rating: number;
-
-  @Column()
-  price: number;
 }

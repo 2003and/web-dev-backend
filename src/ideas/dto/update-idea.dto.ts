@@ -1,7 +1,9 @@
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateIdeaDto } from './create-idea.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class CreateCategoryDto {
+export class UpdateIdeaDto extends PartialType(CreateIdeaDto) {
   @ApiProperty({
     type: 'file',
     properties: {
@@ -13,11 +15,9 @@ export class CreateCategoryDto {
   })
   image: Express.Multer.File;
 
-  @ApiProperty()
   @IsString()
-  name: string;
+  title: string;
 
-  @ApiProperty()
   @IsString()
-  subcategory: string;
+  text: string;
 }

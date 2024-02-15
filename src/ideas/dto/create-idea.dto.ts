@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class CreateCategoryDto {
+export class CreateIdeaDto {
   @ApiProperty({
     type: 'file',
     properties: {
@@ -13,11 +14,6 @@ export class CreateCategoryDto {
   })
   image: Express.Multer.File;
 
-  @ApiProperty()
   @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  subcategory: string;
+  title: string = 'Название акции';
 }

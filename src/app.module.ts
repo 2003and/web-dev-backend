@@ -6,6 +6,9 @@ import { PromoModule } from './promo/promo.module';
 import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './product/product.module';
+import { BrandModule } from './brands/brands.module';
+import { NewsModule } from './news/news.module';
+import { IdeaModule } from './ideas/idea.module';
 
 @Module({
   imports: [
@@ -20,6 +23,9 @@ import { ProductModule } from './product/product.module';
     PromoModule,
     CategoryModule,
     ProductModule,
+    BrandModule,
+    NewsModule,
+    IdeaModule,
   ],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreatePromoDto {
   @ApiProperty({
@@ -14,9 +14,19 @@ export class CreatePromoDto {
   })
   image: Express.Multer.File;
 
+  @ApiProperty()
   @IsString()
   title: string = 'Название акции';
 
+  @ApiProperty()
   @IsString()
   text: string = 'Описание акции';
+
+  @ApiProperty()
+  @IsNumber()
+  rating: number = 5;
+
+  @ApiProperty()
+  @IsNumber()
+  price: number = 10000;
 }
