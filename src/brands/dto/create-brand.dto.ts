@@ -15,5 +15,6 @@ export class CreateBrandDto {
   image: Express.Multer.File;
 
   @IsString()
+  @ApiProperty()
   name: string = 'Название акции';
 }

@@ -20,6 +20,8 @@ export class NewsController {
   @Post()
   @ApiConsumes('multipart/form-data')
   create(@Body() dto: CreateNewsDto) {
+    console.log(dto);
+
     return this.newsService.create(dto);
   }
 

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsString } from 'class-validator';
 
 export class CreatePromoDto {
   @ApiProperty({
@@ -23,10 +24,12 @@ export class CreatePromoDto {
   text: string = 'Описание акции';
 
   @ApiProperty()
-  @IsNumber()
+  @IsInt()
+  @Type(() => Number)
   rating: number = 5;
 
   @ApiProperty()
-  @IsNumber()
+  @IsInt()
+  @Type(() => Number)
   price: number = 10000;
 }

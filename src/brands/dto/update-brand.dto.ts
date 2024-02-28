@@ -16,5 +16,6 @@ export class UpdateBrandDto extends PartialType(CreateBrandDto) {
   image: Express.Multer.File;
 
   @IsString()
+  @ApiProperty()
   name: string;
 }

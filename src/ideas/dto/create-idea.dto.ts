@@ -15,5 +15,6 @@ export class CreateIdeaDto {
   image: Express.Multer.File;
 
   @IsString()
+  @ApiProperty()
   title: string = 'Название акции';
 }

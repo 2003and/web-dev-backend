@@ -15,9 +15,9 @@ export class CreateCategoryDto {
 
   @ApiProperty()
   @IsString()
-  name: string;
+  name: string = '';
 
   @ApiProperty()
   @IsString()
-  subcategory: string;
+  subcategory: string = '';
 }

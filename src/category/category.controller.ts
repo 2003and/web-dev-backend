@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { fileStorage } from './storage';
 
 @ApiTags('category')
 @Controller('category')
@@ -20,8 +23,12 @@ export class CategoryController {
 
   @Post()
   @ApiConsumes('multipart/form-data')
-  create(@Body() dto: CreateCategoryDto) {
-    return this.categoryService.create(dto);
+  @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
+  create(
+    @Body() dto: CreateCategoryDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return this.categoryService.create(dto, image);
   }
 
   @Get()

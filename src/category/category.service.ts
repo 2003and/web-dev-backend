@@ -14,9 +14,15 @@ export class CategoryService {
     private repository: Repository<CategoryEntity>,
   ) {}
 
-  create(dto: CreateCategoryDto): Promise<CategoryEntity> {
+  create(
+    dto: CreateCategoryDto,
+    image: Express.Multer.File,
+  ): Promise<CategoryEntity> {
+    console.log(dto, dto.name);
     return this.repository.save({
+      image: image.filename,
       name: dto.name,
+      subcategory: dto.subcategory,
     });
   }
   findAll() {
