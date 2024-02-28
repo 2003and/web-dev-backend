@@ -5,38 +5,53 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import * as fs from 'fs';
+import { CategoryEntity } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
-    private repository: Repository<ProductEntity>,
+    private productRepository: Repository<ProductEntity>,
+
+    @InjectRepository(CategoryEntity)
+    private categoryRepository: Repository<CategoryEntity>,
   ) {}
 
   async create(
     dto: CreateProductDto,
     image: Express.Multer.File,
   ): Promise<ProductEntity> {
-    return this.repository.save({
-      image: image.filename,
-      name: dto.name,
-      description: dto.description,
-      amount: dto.amount,
-      price: dto.price,
-      category: dto.category,
+    const product = new ProductEntity();
+    product.image = image.filename;
+    product.name = dto.name;
+    product.description = dto.description;
+    product.amount = dto.amount;
+    product.price = dto.price;
+
+    const newProduct = await this.productRepository.save(product);
+
+    const category = await this.categoryRepository.findOne({
+      where: { id: dto.categoryId },
+      relations: ['products'],
     });
+
+    category.products.push(product);
+
+    await this.categoryRepository.save(category);
+
+    return newProduct;
   }
 
   async findAll() {
-    return this.repository.find();
+    return this.productRepository.find();
   }
 
   async findOne(id: number) {
-    return this.repository.findOneBy({ id });
+    return this.productRepository.findOneBy({ id });
   }
 
   async update(id: number, dto: UpdateProductDto, image: Express.Multer.File) {
-    const toUpdate = await this.repository.findOneBy({ id });
+    const toUpdate = await this.productRepository.findOneBy({ id });
     if (!toUpdate) {
       throw new BadRequestException(`Записи с id=${id} не найдено`);
     }
@@ -62,10 +77,10 @@ export class ProductService {
       }
       toUpdate.image = image.filename;
     }
-    return this.repository.save(toUpdate);
+    return this.productRepository.save(toUpdate);
   }
 
   async remove(id: number) {
-    return this.repository.delete(id);
+    return this.productRepository.delete(id);
   }
 }

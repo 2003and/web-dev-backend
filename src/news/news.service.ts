@@ -13,9 +13,14 @@ export class NewsService {
     private repository: Repository<NewsEntity>,
   ) {}
 
-  async create(dto: CreateNewsDto): Promise<NewsEntity> {
+  async create(
+    image: Express.Multer.File,
+    dto: CreateNewsDto,
+  ): Promise<NewsEntity> {
     return this.repository.save({
       title: dto.title,
+      description: dto.description,
+      image: image.filename,
     });
   }
   async findAll() {

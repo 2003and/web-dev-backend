@@ -1,7 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 // import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { CategoryEntity } from 'src/category/entities/category.entity';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsString,
+} from 'class-validator';
 
 export class CreateProductDto {
   @ApiProperty({
@@ -18,21 +22,21 @@ export class CreateProductDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name = 'Тренажер';
+  name: string = 'Тренажер';
 
   @ApiProperty()
   @IsString()
-  description = 'Описание';
+  description: string = 'Описание';
 
   @ApiProperty()
-  @IsInt()
-  amount = 10;
+  // @IsNumber()
+  amount: number = 10;
 
   @ApiProperty()
-  @IsNumber()
-  price = 10000;
+  // @IsNumber()
+  price: number = 10000;
 
   @ApiProperty()
-  @IsString()
-  category: CategoryEntity;
+  @IsNumberString()
+  categoryId: number;
 }

@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { fileStorage } from './storage';
 
 @ApiTags('news')
 @Controller('news')
@@ -19,10 +23,14 @@ export class NewsController {
 
   @Post()
   @ApiConsumes('multipart/form-data')
-  create(@Body() dto: CreateNewsDto) {
+  @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
+  create(
+    @Body() dto: CreateNewsDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
     console.log(dto);
 
-    return this.newsService.create(dto);
+    return this.newsService.create(image, dto);
   }
 
   @Get()
