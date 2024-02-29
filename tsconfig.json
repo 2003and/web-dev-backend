@@ -20,6 +20,6 @@
 
     "lib": ["es5", "es6", "dom"],  
     "moduleResolution": "node",
-    "target": "es5", 
+    "target": "es6", 
   }
 }
