@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
+import { CartEntity } from './entities/cart.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ProductEntity } from 'src/product/entities/product.entity';
 
 @Injectable()
 export class CartService {
-  create(createCartDto: CreateCartDto) {
-    return 'This action adds a new cart';
+  constructor(
+    @InjectRepository(CartEntity)
+    private cartRepository: Repository<CartEntity>,
+
+    @InjectRepository(ProductEntity)
+    private productRepository: Repository<ProductEntity>,
+
+    // @InjectRepository(UserEntity)
+    // private categoryRepository: Repository<UserEntity>,
+  ) {}
+  async create(dto: CreateCartDto) {
+    const cart = new CartEntity();
+    cart.quantity = dto.quantity;
+
+    const newCart = await this.cartRepository.save(cart);
+
+    const product = await this.productRepository.findOne({
+      where: { id: dto.productId },
+      relations: ['carts'],
+    });
+
+    product.carts.push(cart);
+
+    await this.productRepository.save(product);
+
+    return newCart;
+    // todo: make UserEntity connection
   }
 
-  findAll() {
-    return `This action returns all cart`;
+  async findAll() {
+    return this.cartRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cart`;
+  async findOne(id: number) {
+    return this.cartRepository.findOneBy({ id });
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
+  async update(id: number, dto: UpdateCartDto) {
+    const toUpdate = await this.cartRepository.findOneBy({ id });
+    if (!toUpdate) {
+      throw new BadRequestException(`Записи с id=${id} не найдено`);
+    }
+    if (dto.quantity) {
+      toUpdate.quantity = dto.quantity;
+    }
+    return this.cartRepository.save(toUpdate);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async remove(id: number) {
+    return this.cartRepository.delete(id);
   }
 }

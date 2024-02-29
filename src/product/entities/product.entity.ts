@@ -23,6 +23,7 @@ import {
 } from 'typeorm';
 
 import { CategoryEntity } from 'src/category/entities/category.entity';
+import { CartEntity } from 'src/cart/entities/cart.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -49,4 +50,10 @@ export class ProductEntity {
   })
   @JoinColumn()
   category: CategoryEntity;
+
+  @ManyToOne(() => CartEntity, (cart) => cart.product, {
+    lazy: true,
+  })
+  @JoinColumn()
+  carts: CartEntity[];
 }

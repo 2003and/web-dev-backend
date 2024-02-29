@@ -10,6 +10,8 @@ import { BrandModule } from './brands/brands.module';
 import { NewsModule } from './news/news.module';
 import { IdeaModule } from './ideas/idea.module';
 import { CartModule } from './cart/cart.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { CartModule } from './cart/cart.module';
     NewsModule,
     IdeaModule,
     CartModule,
+    UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
