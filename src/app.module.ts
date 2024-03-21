@@ -12,6 +12,7 @@ import { IdeaModule } from './ideas/idea.module';
 import { CartModule } from './cart/cart.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -32,6 +33,8 @@ import { AuthModule } from './auth/auth.module';
     CartModule,
     UsersModule,
     AuthModule,
+    OrderModule,
   ],
+  providers: [],
 })
 export class AppModule {}

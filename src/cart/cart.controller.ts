@@ -6,43 +6,47 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @ApiTags('cart')
 @Controller('cart')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Post()
-  @ApiConsumes('multipart/form-data')
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartService.create(createCartDto);
+  // @ApiConsumes('multipart/form-data')
+  async create(@Body() dto: CreateCartDto) {
+    return this.cartService.create(dto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.cartService.findAll();
   }
 
   @Get(':id')
   @ApiConsumes('multipart/form-data')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.cartService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiConsumes('multipart/form-data')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
+  async update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
     return this.cartService.update(+id, updateCartDto);
   }
 
   @Delete(':id')
   @ApiConsumes('multipart/form-data')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.cartService.remove(+id);
   }
 }

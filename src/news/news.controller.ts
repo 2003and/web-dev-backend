@@ -24,7 +24,7 @@ export class NewsController {
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
-  create(
+  async create(
     @Body() dto: CreateNewsDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
@@ -34,22 +34,22 @@ export class NewsController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.newsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.newsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateNewsDto) {
+  async update(@Param('id') id: string, @Body() dto: UpdateNewsDto) {
     return this.newsService.update(+id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.newsService.delete(+id);
   }
 }

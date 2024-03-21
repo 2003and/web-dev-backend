@@ -8,16 +8,20 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { fileStorage } from './storage';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @ApiTags('category')
 @Controller('category')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 

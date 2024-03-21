@@ -3,17 +3,17 @@ import { IsNotEmpty, IsNumber, IsNumberString } from 'class-validator';
 
 export class CreateCartDto {
   @ApiProperty()
-  @IsNotEmpty()
-  @IsNumberString()
-  productId: number;
+  // @IsNotEmpty()
+  // @IsNumberString()
+  itemId: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
+  // @IsNotEmpty()
+  // @IsNumber()
   quantity: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsNumberString()
+  // @IsNotEmpty()
+  // @IsNumberString()
   userId: number;
 }

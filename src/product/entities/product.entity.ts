@@ -51,8 +51,8 @@ export class ProductEntity {
   @JoinColumn()
   category: CategoryEntity;
 
-  @ManyToOne(() => CartEntity, (cart) => cart.product, {
-    lazy: true,
+  @ManyToOne(() => CartEntity, (cart) => cart.item, {
+    eager: true,
   })
   @JoinColumn()
   carts: CartEntity[];
