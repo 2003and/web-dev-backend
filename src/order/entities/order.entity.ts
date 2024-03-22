@@ -14,10 +14,10 @@ export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @OneToMany((type) => ProductEntity, (item) => item.id)
+  @OneToMany(() => ProductEntity, (item) => item.id)
   items: ProductEntity[];
 
-  @OneToOne((type) => UserEntity, (user) => user.username)
+  @OneToOne(() => UserEntity, (user) => user.username)
   @JoinColumn()
   user: UserEntity;
 

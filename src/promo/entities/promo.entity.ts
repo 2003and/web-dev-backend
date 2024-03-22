@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductEntity } from 'src/product/entities/product.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('promo')
 export class PromoEntity {
@@ -14,10 +15,13 @@ export class PromoEntity {
   @Column()
   text: string;
 
-  // TODO: implement properties
   @Column()
   rating: number;
 
   @Column()
   price: number;
+
+  @OneToOne(() => ProductEntity, (product) => product.promo)
+  @JoinColumn()
+  product: ProductEntity;
 }

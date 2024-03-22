@@ -18,12 +18,16 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import { CartEntity } from 'src/cart/entities/cart.entity';
+import { BrandEntity } from 'src/brands/entities/brand.entity';
+import { PromoEntity } from 'src/promo/entities/promo.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -51,9 +55,21 @@ export class ProductEntity {
   @JoinColumn()
   category: CategoryEntity;
 
-  @ManyToOne(() => CartEntity, (cart) => cart.item, {
+  @ManyToMany(() => CartEntity, (cart) => cart.item, {
     eager: true,
   })
   @JoinColumn()
   carts: CartEntity[];
+
+  @ManyToOne(() => BrandEntity, (brand) => brand.product, {
+    eager: true,
+  })
+  @JoinColumn()
+  brand: BrandEntity;
+
+  @OneToOne(() => PromoEntity, (promo) => promo.product, {
+    eager: true,
+  })
+  @JoinColumn()
+  promo: PromoEntity;
 }

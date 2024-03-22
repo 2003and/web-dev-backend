@@ -9,6 +9,8 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { Module } from '@nestjs/common';
 import { CategoryEntity } from 'src/category/entities/category.entity';
+import { BrandEntity } from 'src/brands/entities/brand.entity';
+import { PromoEntity } from 'src/promo/entities/promo.entity';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { CategoryEntity } from 'src/category/entities/category.entity';
       CartEntity,
       UserEntity,
       CategoryEntity,
+      BrandEntity,
+      PromoEntity,
     ]),
   ],
   controllers: [OrderController],

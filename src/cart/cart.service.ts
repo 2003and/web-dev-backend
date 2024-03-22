@@ -28,7 +28,7 @@ export class CartService {
 
     // @InjectRepository(UserEntity)
     // private categoryRepository: Repository<UserEntity>,
-  ) { }
+  ) {}
   async create(dto: CreateCartDto) {
     const cart = new CartEntity();
     cart.quantity = dto.quantity;

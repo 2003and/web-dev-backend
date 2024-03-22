@@ -28,4 +28,7 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
 
   @ApiProperty()
   category;
+
+  @ApiProperty()
+  promoId;
 }

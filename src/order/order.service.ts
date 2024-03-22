@@ -50,6 +50,4 @@ export class OrderService {
     const orders = await this.orderRepository.find({ relations: ['user'] });
     return orders.filter((order) => order.user?.username === user);
   }
-
-
 }
