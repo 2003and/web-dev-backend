@@ -11,7 +11,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 
 @Entity('order_item')
 export class OrderItemEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => ProductEntity, (product) => product.id)

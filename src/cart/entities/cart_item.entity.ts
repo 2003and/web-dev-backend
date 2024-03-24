@@ -10,7 +10,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 
 @Entity('cart_item')
 export class CartItemEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
@@ -20,7 +20,7 @@ export class CartItemEntity {
   @JoinColumn()
   item: ProductEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.username)
+  @ManyToOne(() => UserEntity, (user) => user.id)
   @JoinColumn()
   user: UserEntity;
 }

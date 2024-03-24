@@ -21,7 +21,7 @@ export class PromoEntity {
   @Column()
   price: number;
 
-  @OneToOne(() => ProductEntity, (product) => product.promo)
+  @OneToOne(() => ProductEntity)
   @JoinColumn()
   product: ProductEntity;
 }

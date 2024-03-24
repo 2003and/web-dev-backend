@@ -39,7 +39,7 @@ export class CreateProductDto {
   @IsNumberString()
   brandId: number;
 
-  @ApiProperty()
-  @IsNumberString()
-  promoId: number;
+  // @ApiProperty()
+  // @IsNumberString()
+  // promoId: number;
 }

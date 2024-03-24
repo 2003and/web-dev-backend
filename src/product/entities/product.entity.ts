@@ -27,8 +27,7 @@ import {
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import { CartItemEntity } from 'src/cart/entities/cart_item.entity';
 import { BrandEntity } from 'src/brands/entities/brand.entity';
-import { PromoEntity } from 'src/promo/entities/promo.entity';
-import { OrderItemEntity } from 'src/order/entities/order_item.entity';
+// import { PromoEntity } from 'src/promo/entities/promo.entity';
 
 @Entity('product')
 export class ProductEntity {
@@ -50,27 +49,27 @@ export class ProductEntity {
   @Column()
   price: number;
 
-  @ManyToOne(() => CategoryEntity, (category) => category.products, {
+  @ManyToOne(() => CategoryEntity, {
     eager: true,
   })
   @JoinColumn()
   category: CategoryEntity;
 
-  @ManyToMany(() => CartItemEntity, (cart) => cart.item, {
-    eager: true,
-  })
-  @JoinColumn()
-  carts: CartItemEntity[];
+  // @ManyToMany(() => CartItemEntity, (cart) => cart.item, {
+  //   eager: true,
+  // })
+  // @JoinColumn()
+  // carts: CartItemEntity[];
 
-  @ManyToOne(() => BrandEntity, (brand) => brand.product, {
+  @ManyToOne(() => BrandEntity, {
     eager: true,
   })
   @JoinColumn()
   brand: BrandEntity;
 
-  @OneToOne(() => PromoEntity, (promo) => promo.product, {
-    eager: true,
-  })
-  @JoinColumn()
-  promo: PromoEntity;
+  // @OneToOne(() => PromoEntity, (promo) => promo.product, {
+  //   eager: true,
+  // })
+  // @JoinColumn()
+  // promo: PromoEntity;
 }

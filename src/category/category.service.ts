@@ -18,7 +18,7 @@ export class CategoryService {
     dto: CreateCategoryDto,
     image: Express.Multer.File,
   ): Promise<CategoryEntity> {
-    console.log(dto, dto.name);
+    // console.log(dto, dto.name);
     return this.repository.save({
       image: image.filename,
       name: dto.name,

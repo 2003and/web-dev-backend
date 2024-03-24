@@ -12,8 +12,8 @@ export class CreateCartDto {
   // @IsNumber()
   quantity: number;
 
-  @ApiProperty()
+  // @ApiProperty()
   // @IsNotEmpty()
   // @IsNumberString()
-  userId: number;
+  // userId: number;
 }

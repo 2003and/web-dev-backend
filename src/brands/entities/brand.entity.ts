@@ -19,7 +19,7 @@ export class BrandEntity {
   @Column()
   name: string;
 
-  @OneToMany(() => ProductEntity, (product) => product.brand)
-  @JoinColumn()
-  product: ProductEntity[];
+  // @OneToMany(() => ProductEntity, (product) => product.brand)
+  // @JoinColumn()
+  // product: ProductEntity[];
 }

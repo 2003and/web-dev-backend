@@ -11,7 +11,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 export class CartService {
   async getItemsInCart(userId: number): Promise<CartItemEntity[]> {
     const userCart = await this.cartItemRepository.find({
-      relations: ['item', 'user'],
+      // relations: ['item', 'user'],
     });
     return (await userCart).filter((item) => item.user.id === userId);
   }
@@ -30,7 +30,7 @@ export class CartService {
   async create(dto: CreateCartDto, userId: number) {
     const userCart = await this.cartItemRepository
       .createQueryBuilder()
-      .select()
+      .select('t.*')
       .from(CartItemEntity, 't')
       .where('t.userId = :userId and t.itemId = :itemId', {
         userId: userId,
@@ -60,20 +60,16 @@ export class CartService {
       userCart.quantity += dto.quantity;
     }
     const newCart = await this.cartItemRepository.save(cartItem);
-
     const product = await this.productRepository.findOne({
       where: { id: dto.itemId },
-      relations: ['carts'],
     });
     const user = await this.userRepository.findOne({
-      where: { id: dto.userId },
-      relations: ['carts'],
+      where: { id: userId },
+      // relations: ['carts'],
     });
-
-    if (product.carts != null) {
-      product.carts.push(cartItem);
-    }
-
+    // if (product.carts != null) {
+    //   product.carts.push(cartItem);
+    // }
     await this.productRepository.save(product);
     await this.userRepository.save(user);
 

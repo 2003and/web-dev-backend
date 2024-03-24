@@ -12,7 +12,7 @@ import { OrderItemEntity } from './order_item.entity';
 
 @Entity('order')
 export class OrderEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => UserEntity, (user) => user.id)
