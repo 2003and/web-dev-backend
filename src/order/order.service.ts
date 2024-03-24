@@ -1,4 +1,5 @@
 import { OrderEntity } from './entities/order.entity';
+import { OrderItemEntity } from './entities/order_item.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartService } from 'src/cart/cart.service';
@@ -8,46 +9,88 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class OrderService {
   constructor(
-    @InjectRepository(OrderEntity)
-    private orderRepository: Repository<OrderEntity>,
+    @InjectRepository(OrderItemEntity)
+    private orderItemRepository: Repository<OrderItemEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(OrderEntity)
+    private orderRepository: Repository<OrderEntity>,
     private cartService: CartService,
-  ) {}
+  ) { }
 
-  async order(user: string): Promise<any> {
+  async order(userId: number, address: string): Promise<any> {
     //find user existing orders
-    const usersOrder = await this.orderRepository.find({ relations: ['user'] });
-    const userOrder = usersOrder.filter(
-      (order) => order.user?.username === user && order.pending === false,
-    );
+    // const usersOrder = await this.orderRepository.find({ relations: ['user'] });
+    const userOrder = await this.orderItemRepository
+      .createQueryBuilder()
+      .select()
+      .from(OrderItemEntity, 't')
+      .where('t.userId = :userId', { userId: userId })
+      .execute();
+
+    // usersOrder.filter(
+    //   (order) => order.user?.username === user && order.pending === false,
+    // );
+
     //find user's cart items
-    const cartItems = await this.cartService.getItemsInCard(user);
+    const cartItems = await this.cartService.getItemsInCart(userId);
     const subTotal = cartItems
-      .map((item) => item.total)
+      .map((cartItem) => cartItem.quantity * cartItem.item.price)
       .reduce((acc, next) => acc + next);
     //get the authenticated user
-    // todo: WHAT THE FUCK DO YOU WANT FROM ME BITCH
-    const authUser = await this.userRepository.findOneBy({ username: user });
-    //if users has an pending order - add item to the list of order
-    const cart = await cartItems.map((item) => item.item);
+    const authUser = await this.userRepository.findOneBy({ id: userId });
+    // const cart = await cartItems.map((item) => item);
+    // const newOrderItem
 
+    // todo: decide if this is needed
     if (userOrder.length === 0) {
-      const newOrder = await this.orderRepository.create({ subTotal });
-      newOrder.items = cart;
-      newOrder.user = authUser;
-      return await this.orderRepository.save(newOrder);
+      // todo: make new order
     } else {
-      const existingOrder = userOrder.map((item) => item);
-      await this.orderRepository.update(existingOrder[0].id, {
-        subTotal: existingOrder[0].subTotal + cart[0].price,
-      });
-      return { message: 'order modified' };
+      // todo: update existing order
     }
+    const newOrder = this.orderRepository.create();
+    for (let i = 0; i <= cartItems.length; i++) {
+      if (cartItems[i] && cartItems[i].item) {
+        const orderItem = this.orderItemRepository.create();
+        orderItem.item = cartItems[i].item;
+        orderItem.user = authUser;
+        orderItem.quantity = cartItems[i].quantity;
+
+        await this.orderItemRepository.save(orderItem);
+        newOrder.items.push(orderItem);
+      }
+    }
+    newOrder.address = address;
+    newOrder.totalPrice = subTotal;
+    newOrder.user = authUser;
+    this.orderRepository.save(newOrder);
+    //if users has an pending order - add item to the list of order
+
+    // const newOrder = await this.orderRepository.create()
+
+    // .map(cartItem => new OrderItemEntity(cart.Item.quantity, cartIyem.ItemId,..)
+    // ).toList()
+    // if (userOrder.length === 0) {
+    //   const newOrder = await this.orderRepository.create();
+    //   newOrder.items = cart;
+    //   newOrder.user = authUser;
+    //   return await this.orderRepository.save(newOrder);
+    // } else {
+    //   const existingOrder = userOrder.map((item) => item);
+    //   await this.orderRepository.update(existingOrder[0].id, {});
+    //   return { message: 'order modified' };
+    // }
+    this.cartService.clearCart(userId);
   }
 
-  async getOrders(user: string): Promise<OrderEntity[]> {
-    const orders = await this.orderRepository.find({ relations: ['user'] });
-    return orders.filter((order) => order.user?.username === user);
+  async getOrders(userId: number): Promise<OrderItemEntity[]> {
+    const userOrder = await this.orderItemRepository
+      .createQueryBuilder()
+      .select()
+      .from(OrderItemEntity, 't')
+      .where('t.userId = :userId', { userId: userId })
+      .execute();
+    // const orders = await this.orderItemRepository.find({ relations: ['user'] });
+    return userOrder;
   }
 }

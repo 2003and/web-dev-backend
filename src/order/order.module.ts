@@ -1,8 +1,9 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrderItemEntity } from './entities/order_item.entity';
 import { OrderEntity } from './entities/order.entity';
 import { ProductEntity } from 'src/product/entities/product.entity';
 import { CartService } from 'src/cart/cart.service';
-import { CartEntity } from 'src/cart/entities/cart.entity';
+import { CartItemEntity } from 'src/cart/entities/cart_item.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { ProductService } from 'src/product/product.service';
 import { OrderController } from './order.controller';
@@ -15,13 +16,14 @@ import { PromoEntity } from 'src/promo/entities/promo.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      OrderEntity,
+      OrderItemEntity,
       ProductEntity,
-      CartEntity,
+      CartItemEntity,
       UserEntity,
       CategoryEntity,
       BrandEntity,
       PromoEntity,
+      OrderEntity,
     ]),
   ],
   controllers: [OrderController],

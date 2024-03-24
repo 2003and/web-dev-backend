@@ -1,31 +1,30 @@
 import {
   Entity,
-  ManyToOne,
   JoinColumn,
+  OneToOne,
   Column,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from 'typeorm';
 import { ProductEntity } from 'src/product/entities/product.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 
-@Entity()
-export class CartEntity {
+@Entity('order_item')
+export class OrderItemEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({
-    nullable: true,
-  })
-  total: number;
+  @ManyToOne(() => ProductEntity, (product) => product.id)
+  @JoinColumn()
+  item: ProductEntity;
+
+  @OneToOne(() => UserEntity, (user) => user.id)
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
 
   @Column()
   quantity: number;
 
-  @ManyToOne(() => ProductEntity, (order) => order.id)
-  @JoinColumn()
-  item: ProductEntity;
-
-  @ManyToOne(() => UserEntity, (user) => user.username)
-  @JoinColumn()
-  user: UserEntity;
+  @Column({ default: false })
+  pending: boolean;
 }
