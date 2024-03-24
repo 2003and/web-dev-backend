@@ -24,11 +24,9 @@ export class CreateProductDto {
   description: string = 'Описание';
 
   @ApiProperty()
-  // @IsNumber()
   amount: number = 10;
 
   @ApiProperty()
-  // @IsNumber()
   price: number = 10000;
 
   @ApiProperty()
@@ -38,8 +36,4 @@ export class CreateProductDto {
   @ApiProperty()
   @IsNumberString()
   brandId: number;
-
-  // @ApiProperty()
-  // @IsNumberString()
-  // promoId: number;
 }

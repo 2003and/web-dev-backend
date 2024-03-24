@@ -1,5 +1,11 @@
 import { ProductEntity } from 'src/product/entities/product.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('promo')
 export class PromoEntity {

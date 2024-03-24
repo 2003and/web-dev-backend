@@ -16,21 +16,16 @@ export class OrderService {
     @InjectRepository(OrderEntity)
     private orderRepository: Repository<OrderEntity>,
     private cartService: CartService,
-  ) { }
+  ) {}
 
   async order(userId: number, address: string): Promise<any> {
     //find user existing orders
-    // const usersOrder = await this.orderRepository.find({ relations: ['user'] });
     const userOrder = await this.orderItemRepository
       .createQueryBuilder()
       .select()
       .from(OrderItemEntity, 't')
       .where('t.userId = :userId', { userId: userId })
       .execute();
-
-    // usersOrder.filter(
-    //   (order) => order.user?.username === user && order.pending === false,
-    // );
 
     //find user's cart items
     const cartItems = await this.cartService.getItemsInCart(userId);
@@ -39,15 +34,7 @@ export class OrderService {
       .reduce((acc, next) => acc + next);
     //get the authenticated user
     const authUser = await this.userRepository.findOneBy({ id: userId });
-    // const cart = await cartItems.map((item) => item);
-    // const newOrderItem
 
-    // todo: decide if this is needed
-    if (userOrder.length === 0) {
-      // todo: make new order
-    } else {
-      // todo: update existing order
-    }
     const newOrder = this.orderRepository.create();
     for (let i = 0; i <= cartItems.length; i++) {
       if (cartItems[i] && cartItems[i].item) {
@@ -65,21 +52,6 @@ export class OrderService {
     newOrder.user = authUser;
     this.orderRepository.save(newOrder);
     //if users has an pending order - add item to the list of order
-
-    // const newOrder = await this.orderRepository.create()
-
-    // .map(cartItem => new OrderItemEntity(cart.Item.quantity, cartIyem.ItemId,..)
-    // ).toList()
-    // if (userOrder.length === 0) {
-    //   const newOrder = await this.orderRepository.create();
-    //   newOrder.items = cart;
-    //   newOrder.user = authUser;
-    //   return await this.orderRepository.save(newOrder);
-    // } else {
-    //   const existingOrder = userOrder.map((item) => item);
-    //   await this.orderRepository.update(existingOrder[0].id, {});
-    //   return { message: 'order modified' };
-    // }
     this.cartService.clearCart(userId);
   }
 
@@ -90,7 +62,6 @@ export class OrderService {
       .from(OrderItemEntity, 't')
       .where('t.userId = :userId', { userId: userId })
       .execute();
-    // const orders = await this.orderItemRepository.find({ relations: ['user'] });
     return userOrder;
   }
 }

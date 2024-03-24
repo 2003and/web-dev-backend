@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 import * as fs from 'fs';
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import { BrandEntity } from 'src/brands/entities/brand.entity';
-import { PromoEntity } from 'src/promo/entities/promo.entity';
 
 @Injectable()
 export class ProductService {
@@ -20,10 +19,7 @@ export class ProductService {
 
     @InjectRepository(BrandEntity)
     private brandRepository: Repository<BrandEntity>,
-
-    // @InjectRepository(PromoEntity)
-    // private promoRepository: Repository<PromoEntity>,
-  ) { }
+  ) {}
 
   async create(
     dto: CreateProductDto,
@@ -31,12 +27,10 @@ export class ProductService {
   ): Promise<ProductEntity> {
     const category = await this.categoryRepository.findOne({
       where: { id: dto.categoryId },
-      // relations: ['products'],
     });
 
     const brand = await this.brandRepository.findOne({
       where: { id: dto.brandId },
-      // relations: ['products'],
     });
 
     if (!category) {
@@ -58,17 +52,6 @@ export class ProductService {
     product.category = category;
     product.brand = brand;
     const newProduct = await this.productRepository.save(product);
-
-    // const promo = await this.promoRepository.findOne({
-    //   where: { id: dto.promoId },
-    //   relations: ['products'],
-    // });
-
-    // category.products.push(product);
-
-    // await this.categoryRepository.save(category);
-    // await this.brandRepository.save(brand);
-    // await this.promoRepository.save(promo);
 
     return newProduct;
   }

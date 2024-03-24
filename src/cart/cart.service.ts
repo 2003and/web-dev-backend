@@ -10,9 +10,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 @Injectable()
 export class CartService {
   async getItemsInCart(userId: number): Promise<CartItemEntity[]> {
-    const userCart = await this.cartItemRepository.find({
-      // relations: ['item', 'user'],
-    });
+    const userCart = await this.cartItemRepository.find({});
     return (await userCart).filter((item) => item.user.id === userId);
   }
 
@@ -25,7 +23,7 @@ export class CartService {
 
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-  ) { }
+  ) {}
 
   async create(dto: CreateCartDto, userId: number) {
     const userCart = await this.cartItemRepository
@@ -48,15 +46,6 @@ export class CartService {
       });
     } else {
       // update existing record
-      //   cartItem = this.cartItemRepository
-      //     .createQueryBuilder()
-      //     .select()
-      //     .from(CartItemEntity, 't')
-      //     .where('t.userId = :userId and t.itemId = :itemId', {
-      //       userId: userId,
-      //       itemId: dto.itemId,
-      //     })
-      //     .execute();
       userCart.quantity += dto.quantity;
     }
     const newCart = await this.cartItemRepository.save(cartItem);
@@ -65,11 +54,7 @@ export class CartService {
     });
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      // relations: ['carts'],
     });
-    // if (product.carts != null) {
-    //   product.carts.push(cartItem);
-    // }
     await this.productRepository.save(product);
     await this.userRepository.save(user);
 
@@ -112,6 +97,5 @@ export class CartService {
       .from(CartItemEntity)
       .where('userId = :userId', { userId: userId })
       .execute();
-    // this.cartRepository.delete({ user.id: user_id });
   }
 }
