@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { ProductEntity } from 'src/product/entities/product.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { OrderEntity } from './order.entity';
 
 @Entity('order_item')
 export class OrderItemEntity {
@@ -18,13 +19,16 @@ export class OrderItemEntity {
   @JoinColumn()
   item: ProductEntity;
 
-  @OneToOne(() => UserEntity, (user) => user.id)
-  @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  // @OneToOne(() => UserEntity, (user) => user.id)
+  // @JoinColumn({ name: 'userId' })
+  // user: UserEntity;
 
   @Column()
   quantity: number;
 
   @Column({ default: false })
   pending: boolean;
+
+  @ManyToOne(() => OrderEntity, (order) => order.items)
+  order: OrderEntity;
 }

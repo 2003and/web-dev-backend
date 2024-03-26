@@ -24,7 +24,7 @@ export class OrderEntity {
   @Column()
   totalPrice: number;
 
-  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.id)
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order)
   @JoinColumn({ name: 'items' })
   items: OrderItemEntity[];
 }

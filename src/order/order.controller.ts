@@ -13,12 +13,13 @@ export class OrderController {
 
   @Post()
   create(@Body() dto: CreateOrderDto, @Req() req: any) {
-    return this.orderService.order(req.id, dto.address);
+    console.log(req);
+    // authInfo = undefined
+    return this.orderService.order(req.user, dto.address);
   }
 
   @Get(':id')
   findOne(@Req() req: any) {
-    console.log(req);
-    return this.orderService.getOrders(req.id);
+    return this.orderService.getOrders(req.user.id);
   }
 }

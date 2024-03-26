@@ -45,7 +45,6 @@ export class AuthService {
   }
 
   async login(user: UserEntity) {
-
     return {
       token: this.jwtService.sign({ id: user.id }),
     };
