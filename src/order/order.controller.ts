@@ -13,11 +13,12 @@ export class OrderController {
 
   @Post()
   create(@Body() dto: CreateOrderDto, @Req() req: any) {
-    return this.orderService.order(req.user_id, dto.address);
+    return this.orderService.order(req.id, dto.address);
   }
 
   @Get(':id')
   findOne(@Req() req: any) {
-    return this.orderService.getOrders(req.user_id);
+    console.log(req);
+    return this.orderService.getOrders(req.id);
   }
 }

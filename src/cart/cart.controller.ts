@@ -13,11 +13,11 @@ export class CartController {
 
   @Post()
   async create(@Body() dto: CreateCartDto, @Req() req: any) {
-    return this.cartService.create(dto, req.user_id);
+    return this.cartService.create(dto, req.id);
   }
 
   @Get()
   get(@Req() req: any) {
-    return this.cartService.get(req.user.id);
+    return this.cartService.get(req.id);
   }
 }
